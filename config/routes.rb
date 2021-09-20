@@ -1,3 +1,7 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get "/teams" => "teams#index"
+  post "/teams" => "teams#create"
+  get "/teams/:id" => "teams#show"
+  patch "/teams/:id" => "teams#update"
+  delete "/teams/:id" => "teams#destroy"
 end
