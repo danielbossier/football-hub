@@ -1,14 +1,15 @@
 class TeamsController < ApplicationController
-  def index
+  def display
     url = "https://www.espn.com/nfl/standings"
     unparsed_page = HTTParty.get(url)
     parsed_page = Nokogiri::HTML(unparsed_page)
     afc_teams = []
     nfc_teams = []
-    afc_index = 2
-    nfc_index = 82
+    nfl_teams = []
+    afc_index = 9
+    nfc_index = 89
     afc_wl_index = 0
-    nfc_wl_index = 165
+    nfc_wl_index = 192
     team_listings = parsed_page.css("section")
 
     16.times do
@@ -29,6 +30,12 @@ class TeamsController < ApplicationController
       afc_wl_index += 12
       nfc_wl_index += 12
     end
+    nfl_teams << afc_teams
+    nfl_teams << nfc_teams
+    render json: nfl_teams
+  end
+
+  def index
     teams = Team.all
     render json: teams.as_json
   end
