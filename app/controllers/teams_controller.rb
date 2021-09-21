@@ -10,6 +10,8 @@ class TeamsController < ApplicationController
     nfc_index = 89
     afc_wl_index = 0
     nfc_wl_index = 192
+    afc_team_index = 1
+    nfc_team_index = 17
     team_listings = parsed_page.css("section")
 
     16.times do
@@ -18,17 +20,34 @@ class TeamsController < ApplicationController
         wins: team_listings.css("span.stat-cell")[afc_wl_index].text,
         losses: team_listings.css("span.stat-cell")[afc_wl_index + 1].text,
       }
+      teams = Team.all
+      team = teams.find(afc_team_index)
+      team.name = afc_team[:name] || team.name
+      team.wins = afc_team[:wins] || team.wins
+      team.losses = afc_team[:losses] || team.losses
+      team.save
+      afc_teams << afc_team
+      afc_index += 3
+      afc_wl_index += 12
+      afc_team_index += 1
+    end
+
+    16.times do
       nfc_team = {
         name: team_listings.css("a.AnchorLink")[nfc_index].text,
         wins: team_listings.css("span.stat-cell")[nfc_wl_index].text,
         losses: team_listings.css("span.stat-cell")[nfc_wl_index + 1].text,
       }
-      afc_teams << afc_team
-      afc_index += 3
+      teams = Team.all
+      team = teams.find(nfc_team_index)
+      team.name = nfc_team[:name] || team.name
+      team.wins = nfc_team[:wins] || team.wins
+      team.losses = nfc_team[:losses] || team.losses
+      team.save
       nfc_teams << nfc_team
       nfc_index += 3
-      afc_wl_index += 12
       nfc_wl_index += 12
+      nfc_team_index += 1
     end
     nfl_teams << afc_teams
     nfl_teams << nfc_teams
@@ -43,8 +62,8 @@ class TeamsController < ApplicationController
   def create
     team = Team.new(
       name: params[:name],
-      width: params[:width],
-      height: params[:height],
+      wins: params[:wins],
+      losses: params[:losses],
     )
     Team.save
     render json: team.as_json
@@ -58,8 +77,8 @@ class TeamsController < ApplicationController
   def update
     team = Team.find_by(id: params[:id])
     team.name = params[:name] || team.name
-    team.width = params[:width] || team.width
-    team.height = params[:height] || team.height
+    team.wins = params[:wins] || team.wins
+    team.losses = params[:losses] || team.losses
     team.save
     render json: team.as_json
   end
