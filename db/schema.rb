@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_20_164710) do
+ActiveRecord::Schema.define(version: 2022_01_19_002123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,11 @@ ActiveRecord::Schema.define(version: 2021_09_20_164710) do
     t.integer "losses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "image"
+    t.string "ties"
+    t.string "conference"
+    t.string "division"
+    t.string "city"
   end
 
 end
