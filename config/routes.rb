@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   get "/teams/:id" => "teams#show"
   patch "/teams/:id" => "teams#update"
   delete "/teams/:id" => "teams#destroy"
+
+  post "/users" => "users#create"
 end
