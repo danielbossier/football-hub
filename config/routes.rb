@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root "homepage#index"
+
   get "/teams" => "teams#index"
   get "/display" => "teams#display"
   post "/teams" => "teams#create"
